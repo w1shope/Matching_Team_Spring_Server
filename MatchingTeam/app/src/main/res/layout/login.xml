@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#BABABA"
-    >
+    android:background="#BABABA">
 
 
     <TextView
@@ -17,28 +16,20 @@
         android:textStyle="bold">
     </TextView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:layout_marginTop="15dp"
-        >
-    </TextView>
-
     <EditText
+        android:id="@+id/editTextLoginEmail"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAlignment="center"
+        android:layout_marginTop="10dp"
         android:inputType="textEmailAddress"
         android:hint="Enter Email"
         android:textSize="30dp"
         >
     </EditText>
     <EditText
+        android:id="@+id/editTextLoginPassword"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -46,31 +37,31 @@
         android:inputType="textVisiblePassword"
         android:layout_marginTop="10dp"
         android:hint="Enter password"
-        android:textSize="30dp"
-        >
+        android:textSize="30dp">
     </EditText>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/editTextLoginUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:text="로그인">
+        android:text="로그인"
+        android:textSize="30dp">
     </androidx.appcompat.widget.AppCompatButton>
 
     <TextView
+        android:id="@+id/textViewForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="비밀번호가 기억나지 않습니까?"
-        android:textStyle="bold"
         android:textAlignment="center"
-        android:layout_gravity="center">
-
+        android:layout_gravity="center"
+        android:textColor="#FF0000"
+        android:text="비밀번호가 기억나지 않습니까?"
+        android:textStyle="bold">
     </TextView>
 
 </LinearLayout>
