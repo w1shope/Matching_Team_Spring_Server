@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="development">
+        <item>백엔드</item>
+        <item>프론트엔드</item>
+        <item>데이터분석</item>
+        <item>프로젝트 기획</item>
+        <item>디자이너</item>
+    </string-array>
+</resources>
