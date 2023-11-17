@@ -12,4 +12,7 @@ interface RegisterUserApi {
 
     @GET("/api/authenticate")
     fun userEmailAuthentication(@Query("address") address: String): Call<String>
+
+    @POST("/api/authenticate")
+    fun userEmailAuthenticationConfirm(@Body authenticateCode: String?): Call<Boolean>
 }

@@ -24,6 +24,8 @@ class RegisterActivity : AppCompatActivity() {
         "도시계획학과", "조선해양플랜트공학과", "체육학과", "태권도학과", "미술학과", "음악학과", "조형디자인학과", "의학과", "국제법무학과", "예술학과",
         "기업정책학과", "스포츠의학과", "ICT 융합해양스마트시티공학과"
     )
+    var authenticateCode: String? = null // 학교 인증 코드
+    var isSuccessAuthentiate: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 학교 인증 버튼
-        binding.buttonRegisterCheckEmail.setOnClickListener {
+        binding.buttonRegisterCheckEmailBtn.setOnClickListener {
             val email: String = binding.editTextRegisterEmail.text.toString()
             val emailPattern = Regex(".*@donga\\.ac\\.kr$")
             val isMatch = emailPattern.matches(email)
@@ -43,8 +45,17 @@ class RegisterActivity : AppCompatActivity() {
                  * 안드로이드 스튜디오에서 해당 인증코드가 일치하는지 확인한다.
                  * 인증이 완료되면 "학교 인증" -> "인증 완료"로 수정한다.
                  */
-                Log.d("test", "test")
                 checkUserEmail(email)
+                binding.editTextRegisterCheckEmailConfirm.visibility = View.VISIBLE
+                binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.VISIBLE
+                binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
+                    checkUserEmailConfirm(authenticateCode)
+                    if(isSuccessAuthentiate == true) {
+                        binding.buttonRegisterCheckEmailBtn.setText("학교 인증 완료")
+                        binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.GONE
+                        binding.editTextRegisterCheckEmailConfirm.visibility = View.GONE
+                    }
+                }
             }
             // "@donga.ac.kr"로 끝나지 않을 때
             else {
@@ -101,12 +112,17 @@ class RegisterActivity : AppCompatActivity() {
 
         val registerBtn: Button = binding.buttonRegisterUser
         registerBtn.setOnClickListener {
-            val email: String = binding.editTextRegisterEmail.text.toString()
-            val name: String = binding.editTextRegisterName.text.toString()
-            val password: String = binding.editTextRegisterPassword.text.toString()
-            val department: String = departmentSelectedItem
-            val development: String = developmentSelectedItem
-            createUser(email, name, password, department, development)
+            if(isSuccessAuthentiate == true) {
+                val email: String = binding.editTextRegisterEmail.text.toString()
+                val name: String = binding.editTextRegisterName.text.toString()
+                val password: String = binding.editTextRegisterPassword.text.toString()
+                val department: String = departmentSelectedItem
+                val development: String = developmentSelectedItem
+                createUser(email, name, password, department, development)
+                isSuccessAuthentiate = false
+            } else {
+                Toast.makeText(applicationContext, "학교 인증이 완료되지 않았습니다", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -163,18 +179,38 @@ class RegisterActivity : AppCompatActivity() {
                 if(response.isSuccessful) {
                     if(response.body() != null) {
                         Toast.makeText(applicationContext, "입력하신 메일로 인증코드가 전송되었습니다", Toast.LENGTH_LONG).show()
+                        Log.d("인증코드 : ", response.body().toString())
+                        authenticateCode = response.body().toString()
                     } else {
                         Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_LONG).show()
                     }
-                } else {
-                    Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                TODO("Not yet implemented")
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
             }
 
+        })
+    }
+
+    private fun checkUserEmailConfirm(authenticateCode: String?) {
+        val retrofit = RetrofitConnection.getInstance()
+        val api: RegisterUserApi = retrofit.create(RegisterUserApi::class.java)
+        val call: Call<Boolean> = api.userEmailAuthenticationConfirm(authenticateCode)
+        call.enqueue(object: Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if(response.isSuccessful) {
+                    if(response.body() != null) {
+                        isSuccessAuthentiate = true
+                    } else
+                        isSuccessAuthentiate = false
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                isSuccessAuthentiate = false
+            }
         })
     }
 }

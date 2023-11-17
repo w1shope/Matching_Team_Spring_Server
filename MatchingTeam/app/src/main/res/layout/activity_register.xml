@@ -42,13 +42,36 @@
     </EditText>
 
     <Button
-        android:id="@+id/buttonRegisterCheckEmail"
+        android:id="@+id/buttonRegisterCheckEmailBtn"
         android:layout_width="110dp"
         android:layout_height="40dp"
         android:text="학교 인증"
         android:layout_marginRight="30dp"
         android:layout_gravity="right"
         android:background="@drawable/rounded_button">
+    </Button>
+    <EditText
+        android:id="@+id/editTextRegisterCheckEmailConfirm"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:inputType="textVisiblePassword"
+        android:hint="Enter your 6-digit code"
+        android:textSize="30dp"
+        android:visibility="gone"
+        >
+    </EditText>
+    <Button
+        android:id="@+id/buttonRegisterCheckEmailConfirmBtn"
+        android:layout_width="110dp"
+        android:layout_height="40dp"
+        android:text="학교 인증"
+        android:layout_marginRight="30dp"
+        android:layout_gravity="right"
+        android:background="@drawable/rounded_button"
+        android:visibility="gone"
+        >
     </Button>
     <EditText
         android:id="@+id/editTextRegisterPassword"
