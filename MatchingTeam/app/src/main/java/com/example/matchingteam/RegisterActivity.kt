@@ -1,24 +1,21 @@
 package com.example.matchingteam
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.databinding.ActivityRegisterBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RegisterActivity : AppCompatActivity() {
-    lateinit var textView: TextView
     val development: Array<String> = arrayOf("백엔드", "프론트엔드", "데이터분석", "프로젝트 기획", "디자인")
     var department: Array<String> = arrayOf(
         "한국어문학과", "영어영문학과", "고고미술사학과", "교육학과", "경제학과", "미디어커뮤니케이션학과", "경영학과", "무역학과", "회계학과",
@@ -27,13 +24,36 @@ class RegisterActivity : AppCompatActivity() {
         "도시계획학과", "조선해양플랜트공학과", "체육학과", "태권도학과", "미술학과", "음악학과", "조형디자인학과", "의학과", "국제법무학과", "예술학과",
         "기업정책학과", "스포츠의학과", "ICT 융합해양스마트시티공학과"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 학교 인증 버튼
+        binding.buttonRegisterCheckEmail.setOnClickListener {
+            val email: String = binding.editTextRegisterEmail.text.toString()
+            val emailPattern = Regex(".*@donga\\.ac\\.kr$")
+            val isMatch = emailPattern.matches(email)
+            // "@donga.ac.kr"로 끝날 때
+            if (isMatch) {
+                /**
+                 * 스프링 서버에서 인증 코드를 생성한다.
+                 * 현재 입력된 이메일로 인증 코드를 전송한다.
+                 * 안드로이드 스튜디오에서 해당 인증코드가 일치하는지 확인한다.
+                 * 인증이 완료되면 "학교 인증" -> "인증 완료"로 수정한다.
+                 */
+                Log.d("test", "test")
+                checkUserEmail(email)
+            }
+            // "@donga.ac.kr"로 끝나지 않을 때
+            else {
+                Toast.makeText(applicationContext, "동아대학교 이메일이 아닙니다", Toast.LENGTH_LONG).show()
+                binding.editTextRegisterEmail.setText("")
+            }
+        }
+
         // 개발 희망 분야 선택
-//        textView = binding.textViewDropDown
         val developmentSpinner = binding.spinnerDevelopment
         val developmentAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, development)
@@ -42,7 +62,7 @@ class RegisterActivity : AppCompatActivity() {
         )
         developmentSpinner.setAdapter(developmentAdapter)
 
-        var developmentSelectedItem: String = "백엔드"
+        var developmentSelectedItem = "백엔드"
         developmentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -65,7 +85,7 @@ class RegisterActivity : AppCompatActivity() {
         )
         departmentSpinner.setAdapter(departmentAdapter)
 
-        var departmentSelectedItem: String = "한국어문학과"
+        var departmentSelectedItem = "한국어문학과"
         departmentSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -86,25 +106,75 @@ class RegisterActivity : AppCompatActivity() {
             val password: String = binding.editTextRegisterPassword.text.toString()
             val department: String = departmentSelectedItem
             val development: String = developmentSelectedItem
-            createUser(email, name, password, development)
+            createUser(email, name, password, department, development)
         }
     }
 
-    fun createUser(email: String, name: String, password: String, development: String){
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-
+    /**
+     * 계정 생성 로직
+     */
+    private fun createUser(
+        email: String,
+        name: String,
+        password: String,
+        department: String,
+        development: String
+    ) {
+        val retrofit = RetrofitConnection.getInstance()
         val api: RegisterUserApi = retrofit.create(RegisterUserApi::class.java)
-        val call: Call<User> = api.saveUser(User(email, name, password, development))
-        call.enqueue(object : Callback<User> {
-            override fun onResponse(call: Call<User>, response: Response<User>) {
+        val call: Call<RegisterUserDto> =
+            api.saveUser(RegisterUserDto(email, name, password, department, development))
+        call.enqueue(object : Callback<RegisterUserDto> {
+            override fun onResponse(
+                call: Call<RegisterUserDto>,
+                response: Response<RegisterUserDto>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        Toast.makeText(applicationContext, "회원가입이 완료되었습니다", Toast.LENGTH_LONG)
+                            .show()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            finish()
+                        }, 1500)
+                    } else {
+                        Toast.makeText(applicationContext, "회원가입에 실패하였습니다", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
             }
-            override fun onFailure(call: Call<User>, t: Throwable) {
+
+            override fun onFailure(call: Call<RegisterUserDto>, t: Throwable) {
+                Log.d("Register", t.printStackTrace().toString())
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    /**
+     * 이메일 인증 로직
+     */
+    private fun checkUserEmail(address: String) {
+        val retrofit = RetrofitConnection.getInstance()
+        val api: RegisterUserApi = retrofit.create(RegisterUserApi::class.java)
+        val call: Call<String> =
+            api.userEmailAuthentication(address)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if(response.isSuccessful) {
+                    if(response.body() != null) {
+                        Toast.makeText(applicationContext, "입력하신 메일로 인증코드가 전송되었습니다", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 TODO("Not yet implemented")
             }
+
         })
     }
 }

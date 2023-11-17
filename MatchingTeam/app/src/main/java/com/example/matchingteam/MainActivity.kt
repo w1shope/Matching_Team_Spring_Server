@@ -19,16 +19,14 @@ class MainActivity : AppCompatActivity() {
 
         val registerBtn: Button = binding.buttonOpenRegisterForm
         registerBtn.setOnClickListener {
-            val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         val loginBtn: Button = binding.buttonOpenLoginForm
         loginBtn.setOnClickListener {
             val intent: Intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 }
