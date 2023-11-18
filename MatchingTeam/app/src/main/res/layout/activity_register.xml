@@ -46,7 +46,7 @@
         android:id="@+id/buttonRegisterCheckEmailBtn"
         android:layout_width="110dp"
         android:layout_height="40dp"
-        android:text="학교 인증"
+        android:text="학생 인증"
         android:layout_marginRight="30dp"
         android:layout_gravity="right"
         android:background="@drawable/rounded_button">

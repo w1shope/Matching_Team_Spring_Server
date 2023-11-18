@@ -52,11 +52,11 @@ class RegisterActivity : AppCompatActivity() {
                 binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
                     checkUserEmailConfirm(authenticateCode)
                     if(isSuccessAuthentiate) {
+                        Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_LONG).show()
                         binding.buttonRegisterCheckEmailBtn.text = "인증 완료"
                         modifyPrevention()
                         binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.GONE
                         binding.editTextRegisterCheckEmailConfirm.visibility = View.GONE
-                        Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_LONG).show()
                     }
                 }
             }
