@@ -1,5 +1,6 @@
 package com.example.matchingteam
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -50,10 +51,12 @@ class RegisterActivity : AppCompatActivity() {
                 binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
                     checkUserEmailConfirm(authenticateCode)
-                    if(isSuccessAuthentiate == true) {
-                        binding.buttonRegisterCheckEmailBtn.setText("학교 인증 완료")
+                    if(isSuccessAuthentiate) {
+                        binding.buttonRegisterCheckEmailBtn.text = "인증 완료"
+                        modifyPrevention()
                         binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.GONE
                         binding.editTextRegisterCheckEmailConfirm.visibility = View.GONE
+                        Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -112,7 +115,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val registerBtn: Button = binding.buttonRegisterUser
         registerBtn.setOnClickListener {
-            if(isSuccessAuthentiate == true) {
+            if(isSuccessAuthentiate) {
                 val email: String = binding.editTextRegisterEmail.text.toString()
                 val name: String = binding.editTextRegisterName.text.toString()
                 val password: String = binding.editTextRegisterPassword.text.toString()
@@ -212,5 +215,16 @@ class RegisterActivity : AppCompatActivity() {
                 isSuccessAuthentiate = false
             }
         })
+    }
+
+    /**
+     * 학교 인증 완료 후 email 수정 방지
+     */
+    private fun modifyPrevention() {
+        val binding = ActivityRegisterBinding.bind(findViewById(R.id.rootLayoutId))
+        binding.editTextRegisterEmail.isClickable = false
+        binding.editTextRegisterEmail.isFocusable = false
+        binding.editTextRegisterEmail.isFocusableInTouchMode = false
+        binding.editTextRegisterEmail.setTextColor(Color.GRAY)
     }
 }
