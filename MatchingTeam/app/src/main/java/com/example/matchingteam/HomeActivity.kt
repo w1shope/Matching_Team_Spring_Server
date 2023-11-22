@@ -37,8 +37,17 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.buttonMyinfo.setOnClickListener {
-            val intent: Intent = Intent(this, MyInfoActivity::class.java)
-            startActivity(intent)
+            val isLogin: Boolean = isLogin()
+            // 사용자 정보 화면으로 이동
+            if(isLogin) {
+                val intent: Intent = Intent(this, MyInfoActivity::class.java)
+                val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+                val loginEmail = sp.getString("loginEmail", null)
+                intent.putExtra("loginEmail", loginEmail)
+                startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
