@@ -1,4 +1,4 @@
-package com.example.matchingteam
+package com.example.matchingteam.register
 
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.matchingteam.R
+import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityRegisterBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,17 +48,20 @@ class RegisterActivity : AppCompatActivity() {
                  * 안드로이드 스튜디오에서 해당 인증코드가 일치하는지 확인한다.
                  * 인증이 완료되면 "학교 인증" -> "인증 완료"로 수정한다.
                  */
+                Log.d("respones->",isSuccessAuthentiate.toString())
                 checkUserEmail(email)
+                Log.d("respones->",isSuccessAuthentiate.toString())
                 binding.editTextRegisterCheckEmailConfirm.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
-                    checkUserEmailConfirm(authenticateCode)
                     if(isSuccessAuthentiate) {
                         Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_LONG).show()
                         binding.buttonRegisterCheckEmailBtn.text = "인증 완료"
                         modifyPrevention()
                         binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.GONE
                         binding.editTextRegisterCheckEmailConfirm.visibility = View.GONE
+                    } else {
+                        Toast.makeText(applicationContext, "인증 코드가 일치하지 않습니다", Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -119,9 +124,10 @@ class RegisterActivity : AppCompatActivity() {
                 val email: String = binding.editTextRegisterEmail.text.toString()
                 val name: String = binding.editTextRegisterName.text.toString()
                 val password: String = binding.editTextRegisterPassword.text.toString()
+                val studentNum : Int = binding.editTextRegisterStudentNumber.text.toString().toInt()
                 val department: String = departmentSelectedItem
                 val development: String = developmentSelectedItem
-                createUser(email, name, password, department, development)
+                createUser(email, name, password, studentNum, department, development)
                 isSuccessAuthentiate = false
             } else {
                 Toast.makeText(applicationContext, "학교 인증이 완료되지 않았습니다", Toast.LENGTH_LONG).show()
@@ -136,13 +142,14 @@ class RegisterActivity : AppCompatActivity() {
         email: String,
         name: String,
         password: String,
+        studentNum: Int,
         department: String,
         development: String
     ) {
         val retrofit = RetrofitConnection.getInstance()
         val api: RegisterUserApi = retrofit.create(RegisterUserApi::class.java)
         val call: Call<RegisterUserDto> =
-            api.saveUser(RegisterUserDto(email, name, password, department, development))
+            api.saveUser(RegisterUserDto(email, name, password, studentNum, department, development))
         call.enqueue(object : Callback<RegisterUserDto> {
             override fun onResponse(
                 call: Call<RegisterUserDto>,
@@ -182,8 +189,8 @@ class RegisterActivity : AppCompatActivity() {
                 if(response.isSuccessful) {
                     if(response.body() != null) {
                         Toast.makeText(applicationContext, "입력하신 메일로 인증코드가 전송되었습니다", Toast.LENGTH_LONG).show()
-                        Log.d("인증코드 : ", response.body().toString())
                         authenticateCode = response.body().toString()
+                        Log.d("인증 : ", authenticateCode.toString())
                     } else {
                         Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_LONG).show()
                     }
@@ -205,7 +212,9 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if(response.isSuccessful) {
                     if(response.body() != null) {
-                        isSuccessAuthentiate = true
+                        if(response.body().toString().equals("true")){
+                            isSuccessAuthentiate = true
+                        }
                     } else
                         isSuccessAuthentiate = false
                 }

@@ -1,4 +1,4 @@
-package com.example.matchingteam
+package com.example.matchingteam.connection
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

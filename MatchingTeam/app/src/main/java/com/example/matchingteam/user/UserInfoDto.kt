@@ -1,4 +1,4 @@
-package com.example.matchingteam
+package com.example.matchingteam.user
 
 import com.google.gson.annotations.SerializedName
 

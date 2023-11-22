@@ -1,11 +1,17 @@
-package com.example.matchingteam
+package com.example.matchingteam.myinfo
 
+import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
+import com.example.matchingteam.login.LoginActivity
+import com.example.matchingteam.R
+import com.example.matchingteam.connection.RetrofitConnection
+import com.example.matchingteam.user.UserInfoDto
 import com.example.matchingteam.databinding.ActivityMyInfoBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,11 +26,18 @@ class MyInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding =  ActivityMyInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        getUserInfo("1923963@donga.ac.kr")
-
+        // 이전 Activity에서 사용된 Intent 가져온다.
+        val intent: Intent = getIntent()
+        val loginEmail: String? = intent.getStringExtra("loginEmail")
+        getUserInfo(loginEmail.toString())
+        binding.buttonLogout.setOnClickListener {
+            logout()
+        }
     }
 
+    /**
+     * 사용자 정보를 가져온다.
+     */
     private fun getUserInfo(email: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api: MyInfoApi = retrofit.create(MyInfoApi::class.java)
@@ -35,7 +48,6 @@ class MyInfoActivity : AppCompatActivity() {
                     if(response.body() != null) {
                         val userInfoDto: UserInfoDto? = response.body()
                         if(userInfoDto != null) {
-                            Log.d("response : ",userInfoDto.toString())
                             userEmail = userInfoDto.email
                             userName = userInfoDto.name
                             userDepartment = userInfoDto.department
@@ -62,6 +74,10 @@ class MyInfoActivity : AppCompatActivity() {
             }
         })
     }
+
+    /**
+     * getUserInfo()를 통해 가져온 사용자 정보를 화면에 뿌린다
+     */
     private fun updateUI(email: String?, name: String?, department: String?, studentNum: Int) {
 //        val binding = ActivityMyInfoBinding.inflate(layoutInflater) // 새로운 ActivityMyInfoBinding를 생성
         val binding = ActivityMyInfoBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
@@ -72,4 +88,17 @@ class MyInfoActivity : AppCompatActivity() {
         binding.textViewDepartment2.setText(department)
     }
 
+    /**
+     * 로그아웃 메서드
+     */
+    private fun logout() {
+        val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+        val autoLoginEdit: SharedPreferences.Editor = sp.edit()
+        autoLoginEdit.clear()
+        autoLoginEdit.commit()
+        Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_LONG).show()
+
+        val intent: Intent = Intent(this@MyInfoActivity, LoginActivity::class.java)
+        startActivity(intent)
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.matchingteam
+package com.example.matchingteam.register
 
 import retrofit2.Call
 import retrofit2.http.Body

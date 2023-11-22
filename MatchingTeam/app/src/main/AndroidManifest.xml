@@ -16,7 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MyInfoActivity"
+            android:name=".board.BoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".myinfo.MyInfoActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
@@ -28,10 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".register.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
