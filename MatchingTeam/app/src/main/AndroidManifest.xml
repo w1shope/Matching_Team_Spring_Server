@@ -16,13 +16,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".board.BoardActivity"
+            android:name=".activity.board.UpdateBoardActivity"
             android:exported="false" />
         <activity
-            android:name=".myinfo.MyInfoActivity"
+            android:name=".activity.board.ReadBoardActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activity.board.EnrolBoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.board.BoardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.myinfo.MyInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,13 +40,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".activity.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".register.RegisterActivity"
+            android:name=".activity.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="false" />
     </application>
 

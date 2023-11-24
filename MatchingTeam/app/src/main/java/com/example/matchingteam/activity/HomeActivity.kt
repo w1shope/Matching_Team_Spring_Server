@@ -1,17 +1,17 @@
-package com.example.matchingteam
+package com.example.matchingteam.activity
 
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.matchingteam.R
+import com.example.matchingteam.activity.board.BoardActivity
+import com.example.matchingteam.activity.login.LoginActivity
+import com.example.matchingteam.activity.myinfo.MyInfoActivity
+import com.example.matchingteam.activity.register.RegisterActivity
 import com.example.matchingteam.databinding.ActivityHomeBinding
-import com.example.matchingteam.databinding.ActivityMyInfoBinding
-import com.example.matchingteam.login.LoginActivity
-import com.example.matchingteam.myinfo.MyInfoActivity
-import com.example.matchingteam.register.RegisterActivity
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
         binding.buttonLogin.setOnClickListener {
             val isLogin: Boolean = isLogin()
             // 로그인 상태 -> 로그아웃 처리
-            if(isLogin) {
+            if (isLogin) {
                 logout()
                 changeLoginStatus()
             }
@@ -36,12 +36,23 @@ class HomeActivity : AppCompatActivity() {
             val intent: Intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
+        binding.buttonProject.setOnClickListener {
+            val isLogin: Boolean = isLogin()
+            // 팀 프로젝트 화면으로 이동
+            if (isLogin) {
+                val intent: Intent = Intent(this, BoardActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_LONG).show()
+            }
+        }
         binding.buttonMyinfo.setOnClickListener {
             val isLogin: Boolean = isLogin()
             // 사용자 정보 화면으로 이동
-            if(isLogin) {
+            if (isLogin) {
                 val intent: Intent = Intent(this, MyInfoActivity::class.java)
-                val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+                val sp: SharedPreferences =
+                    getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
                 val loginEmail = sp.getString("loginEmail", null)
                 intent.putExtra("loginEmail", loginEmail)
                 startActivity(intent)
@@ -57,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        logout()
+//        logout()
     }
 
     /**
@@ -66,11 +77,12 @@ class HomeActivity : AppCompatActivity() {
     private fun changeLoginStatus() {
         val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
         // null : key에 대한 value가 없을 때, 반환할 값
-        val loginEmail: String? = sp.getString("loginEmail",null)
+        val loginEmail: String? = sp.getString("loginEmail", null)
         val loginPassword: String? = sp.getString("loginPassword", null)
 
-        if(loginEmail != null && loginPassword != null) {
-            val binding = ActivityHomeBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
+        if (loginEmail != null && loginPassword != null) {
+            val binding =
+                ActivityHomeBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
             binding.buttonLogin.text = "로그아웃"
         } else {
             val binding = ActivityHomeBinding.bind(findViewById(R.id.rootLayoutId))
@@ -97,9 +109,9 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun isLogin(): Boolean {
         val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
-        val loginEmail: String? = sp.getString("loginEmail",null)
+        val loginEmail: String? = sp.getString("loginEmail", null)
         val loginPassword: String? = sp.getString("loginPassword", null)
-        if(loginEmail == null || loginPassword == null)
+        if (loginEmail == null || loginPassword == null)
             return false
         return true
     }

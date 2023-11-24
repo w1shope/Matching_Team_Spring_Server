@@ -1,4 +1,4 @@
-package com.example.matchingteam.login
+package com.example.matchingteam.activity.login
 
 import android.app.Activity
 import android.content.Intent
@@ -6,15 +6,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.matchingteam.HomeActivity
-import com.example.matchingteam.register.RegisterActivity
+import com.example.matchingteam.activity.HomeActivity
+import com.example.matchingteam.activity.register.RegisterActivity
+import com.example.matchingteam.api.user.LoginUserApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityLoginBinding
-import com.example.matchingteam.myinfo.MyInfoActivity
+import com.example.matchingteam.dto.user.LoginUserDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,13 +54,15 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "로그인에 성공하였습니다", Toast.LENGTH_LONG).show()
                         // Toast 메시지를 띄우고 1.5초 후에 finish() 호출한다.
                         Handler(Looper.getMainLooper()).postDelayed({
-                            val intent: Intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            val intent: Intent =
+                                Intent(this@LoginActivity, HomeActivity::class.java)
                             login(email, password)
                             startActivity(intent)
                         }, 750)
                     }
                 } else {
-                    Toast.makeText(applicationContext, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
 
@@ -75,8 +77,9 @@ class LoginActivity : AppCompatActivity() {
      */
     private fun isClickAutoLoginCheckBox(checkBox: CheckBox, email: String, password: String) {
         // 자동로그인 클릭하였을 때
-        if(checkBox.isChecked) {
-            val auto: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+        if (checkBox.isChecked) {
+            val auto: SharedPreferences =
+                getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
             val autoLoginEdit: SharedPreferences.Editor = auto.edit()
             // 로그인 정보 저장
             autoLoginEdit.putString("autoLoginEmail", email)
@@ -91,10 +94,10 @@ class LoginActivity : AppCompatActivity() {
     private fun autoLogin() {
         val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
         // null : key에 대한 value가 없을 때, 반환할 값
-        val autoLoginEmail: String? = sp.getString("autoLoginEmail",null)
+        val autoLoginEmail: String? = sp.getString("autoLoginEmail", null)
         val autoLoginPassword: String? = sp.getString("autoLoginPassword", null)
 
-        if(autoLoginEmail != null && autoLoginPassword != null) {
+        if (autoLoginEmail != null && autoLoginPassword != null) {
             checkLogin(autoLoginEmail, autoLoginPassword)
         }
     }

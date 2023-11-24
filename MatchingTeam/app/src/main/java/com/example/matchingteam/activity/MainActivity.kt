@@ -1,12 +1,12 @@
-package com.example.matchingteam
+package com.example.matchingteam.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.example.matchingteam.activity.login.LoginActivity
+import com.example.matchingteam.activity.register.RegisterActivity
 import com.example.matchingteam.databinding.ActivityMainBinding
-import com.example.matchingteam.login.LoginActivity
-import com.example.matchingteam.register.RegisterActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

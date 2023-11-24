@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootBoardLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/rootBoardLayout"
-    >
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -23,7 +23,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/view_border"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/buttonStatus1"
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성자 : 이희망 /"
+                    android:text="작성자 : 이희망 "
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
 
@@ -83,9 +84,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성 일시 : 23.11.18"
+                    android:text="작성 일시 : 23.11.18 "
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/hiddenCreatedDate1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="invisible"></TextView>
 
                 <TextView
                     android:id="@+id/textViewViewCnt1"
@@ -95,7 +103,6 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:gravity="right"
                     android:text="조회수 : 1000"
                     android:textSize="12dp"></TextView>
             </LinearLayout>
@@ -104,14 +111,14 @@
 
     <LinearLayout
         android:id="@+id/mainLayout2"
-        android:visibility="gone"
         android:layout_width="390dp"
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/view_border"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/buttonStatus2"
@@ -161,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성자 : 이희망 /"
+                    android:text="작성자 : 이희망 "
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
 
@@ -171,9 +178,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성 일시 : 23.11.18"
+                    android:text="작성일자 : 23.11.18"
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/hiddenCreatedDate2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="invisible"></TextView>
 
                 <TextView
                     android:id="@+id/textViewViewCnt2"
@@ -183,7 +197,6 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:gravity="right"
                     android:text="조회수 : 1000"
                     android:textSize="12dp"></TextView>
             </LinearLayout>
@@ -192,14 +205,14 @@
 
     <LinearLayout
         android:id="@+id/mainLayout3"
-        android:visibility="gone"
         android:layout_width="390dp"
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/view_border"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/buttonStatus3"
@@ -249,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성자 : 이희망 /"
+                    android:text="작성자 : 이희망 "
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
 
@@ -259,9 +272,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="작성 일시 : 23.11.18"
+                    android:text="작성일자 : 23.11.18"
                     android:textColor="#575151"
                     android:textSize="12dp"></TextView>
+
+                <TextView
+                    android:id="@+id/hiddenCreatedDate3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:visibility="invisible"></TextView>
 
                 <TextView
                     android:id="@+id/textViewViewCnt3"
@@ -271,12 +291,27 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:gravity="right"
                     android:text="조회수 : 1000"
                     android:textSize="12dp"></TextView>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/button_write"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:text="등록하기"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            tools:layout_editor_absoluteX="105dp"
+            tools:layout_editor_absoluteY="437dp"></Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

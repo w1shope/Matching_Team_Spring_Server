@@ -1,10 +1,10 @@
-package com.example.matchingteam.register
+package com.example.matchingteam.dto.user
 
 import com.google.gson.annotations.SerializedName
 
 data class RegisterUserDto(
     @SerializedName("email") val email: String,
-    @SerializedName("name")  val name: String,
+    @SerializedName("name") val name: String,
     @SerializedName("password") val password: String,
     @SerializedName("studentNum") val studentNum: Int,
     @SerializedName("department") val department: String,

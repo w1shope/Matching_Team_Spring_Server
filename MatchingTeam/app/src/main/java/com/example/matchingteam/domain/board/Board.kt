@@ -1,7 +1,6 @@
-package com.example.matchingteam.board
+package com.example.matchingteam.domain.board
 
 import com.google.gson.annotations.SerializedName
-import java.io.Serial
 import java.sql.Timestamp
 
 data class Board(

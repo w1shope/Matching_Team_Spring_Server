@@ -1,18 +1,18 @@
-package com.example.matchingteam.myinfo
+package com.example.matchingteam.activity.myinfo
 
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
-import com.example.matchingteam.login.LoginActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
+import com.example.matchingteam.activity.login.LoginActivity
+import com.example.matchingteam.api.user.MyInfoApi
 import com.example.matchingteam.connection.RetrofitConnection
-import com.example.matchingteam.user.UserInfoDto
 import com.example.matchingteam.databinding.ActivityMyInfoBinding
+import com.example.matchingteam.dto.user.UserInfoDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +24,7 @@ class MyInfoActivity : AppCompatActivity() {
     var userStudentNum: Int = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding =  ActivityMyInfoBinding.inflate(layoutInflater)
+        val binding = ActivityMyInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 이전 Activity에서 사용된 Intent 가져온다.
         val intent: Intent = getIntent()
@@ -42,12 +42,12 @@ class MyInfoActivity : AppCompatActivity() {
         val retrofit = RetrofitConnection.getInstance()
         val api: MyInfoApi = retrofit.create(MyInfoApi::class.java)
         val call: Call<UserInfoDto> = api.getUserInfo(email)
-        call.enqueue(object: Callback<UserInfoDto> {
+        call.enqueue(object : Callback<UserInfoDto> {
             override fun onResponse(call: Call<UserInfoDto>, response: Response<UserInfoDto>) {
-                if(response.isSuccessful) {
-                    if(response.body() != null) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
                         val userInfoDto: UserInfoDto? = response.body()
-                        if(userInfoDto != null) {
+                        if (userInfoDto != null) {
                             userEmail = userInfoDto.email
                             userName = userInfoDto.name
                             userDepartment = userInfoDto.department
@@ -57,9 +57,11 @@ class MyInfoActivity : AppCompatActivity() {
                     }
                     // 사용자 정보를 가져올 수 없으면 로그인창으로 이동
                     else {
-                        Toast.makeText(applicationContext, "사용자 정보를 가져올 수 없습니다", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, "사용자 정보를 가져올 수 없습니다", Toast.LENGTH_LONG)
+                            .show()
                         Handler().postDelayed({
-                            val intent: Intent = Intent(this@MyInfoActivity, LoginActivity::class.java)
+                            val intent: Intent =
+                                Intent(this@MyInfoActivity, LoginActivity::class.java)
                             startActivity(intent)
                         }, 1500)
                     }
@@ -80,7 +82,8 @@ class MyInfoActivity : AppCompatActivity() {
      */
     private fun updateUI(email: String?, name: String?, department: String?, studentNum: Int) {
 //        val binding = ActivityMyInfoBinding.inflate(layoutInflater) // 새로운 ActivityMyInfoBinding를 생성
-        val binding = ActivityMyInfoBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
+        val binding =
+            ActivityMyInfoBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
         binding.textViewName.setText(name)
         binding.textViewStudentNum.setText("동아대 ${studentNum.toString().substring(0, 2)}학번")
         binding.textViewDepartment1.setText(department)

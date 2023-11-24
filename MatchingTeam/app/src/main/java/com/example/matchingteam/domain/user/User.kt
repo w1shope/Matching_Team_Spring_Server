@@ -1,7 +1,6 @@
-package com.example.matchingteam.user
+package com.example.matchingteam.domain.user
 
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.FormUrlEncoded
 
 class User {
     @SerializedName("email")

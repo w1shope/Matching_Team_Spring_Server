@@ -1,4 +1,4 @@
-package com.example.matchingteam.user
+package com.example.matchingteam.dto.user
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,5 +7,4 @@ data class UserInfoDto(
     @SerializedName("name") val name: String?,
     @SerializedName("department") val department: String?,
     @SerializedName("studentNum") val studentNum: Int
-
 )

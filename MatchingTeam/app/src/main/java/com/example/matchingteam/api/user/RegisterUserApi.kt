@@ -1,5 +1,6 @@
-package com.example.matchingteam.register
+package com.example.matchingteam.api.user
 
+import com.example.matchingteam.dto.user.RegisterUserDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
