@@ -6,14 +6,10 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.matchingteam.R
 import com.example.matchingteam.api.board.BoardApi
-import com.example.matchingteam.api.user.FindUserApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityUpdateBoardBinding
-import com.example.matchingteam.domain.board.Board
 import com.example.matchingteam.dto.board.UpdateBoardDto
-import com.example.matchingteam.dto.user.FindUserDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

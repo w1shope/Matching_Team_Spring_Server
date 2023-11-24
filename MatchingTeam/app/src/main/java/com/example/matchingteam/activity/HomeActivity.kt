@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
@@ -11,12 +12,20 @@ import com.example.matchingteam.activity.board.BoardActivity
 import com.example.matchingteam.activity.login.LoginActivity
 import com.example.matchingteam.activity.myinfo.MyInfoActivity
 import com.example.matchingteam.activity.register.RegisterActivity
+import com.example.matchingteam.api.user.FindUserApi
+import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityHomeBinding
+import com.example.matchingteam.dto.user.FindUserDto
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.create
 
 class HomeActivity : AppCompatActivity() {
+    lateinit var binding: ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         changeLoginStatus()
         binding.buttonLogin.setOnClickListener {
@@ -65,19 +74,37 @@ class HomeActivity : AppCompatActivity() {
     }
 
     /**
-     * 앱 강제 종료시에 처리할 로직
-     * 로그인 정보 지운다
+     * 사용자가 등록한 게시물 개수, 댓글, 프로젝트 개수 표시
      */
-    override fun onDestroy() {
-        super.onDestroy()
-//        logout()
+    private fun updateUI() {
+        val sp: SharedPreferences = getSharedPreferences()
+        val email: String = sp.getString("loginEmail", null)!!
+        val password: String = sp.getString("loginPassword", null)!!
+        val retrofit = RetrofitConnection.getInstance()
+        val api: FindUserApi = retrofit.create(FindUserApi::class.java)
+        val call: Call<FindUserDto> = api.userInfo(email, password)
+        call.enqueue(object : Callback<FindUserDto> {
+            override fun onResponse(call: Call<FindUserDto>, response: Response<FindUserDto>) {
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        binding.textViewWriteCount.text = "작성한 게시물 : ${response.body()!!.writeCount.toString()}개"
+                        binding.textViewCommentCount.text = "작성한 댓글 : ${response.body()!!.commentCount.toString()}개"
+                        binding.textViewProejectCount.text = "진행중인 프로젝트 : ${response.body()!!.projectCount.toString()}개"
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<FindUserDto>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     /**
      * 로그인 여부에 따라 UI에 보여주는 내용(로그인<->로그아웃) 변경
      */
     private fun changeLoginStatus() {
-        val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+        val sp: SharedPreferences = getSharedPreferences()
         // null : key에 대한 value가 없을 때, 반환할 값
         val loginEmail: String? = sp.getString("loginEmail", null)
         val loginPassword: String? = sp.getString("loginPassword", null)
@@ -86,6 +113,7 @@ class HomeActivity : AppCompatActivity() {
             val binding =
                 ActivityHomeBinding.bind(findViewById(R.id.rootLayoutId)) // 기존의 ActivityMyInfoBinding 사용
             binding.buttonLogin.text = "로그아웃"
+            updateUI()
         } else {
             val binding = ActivityHomeBinding.bind(findViewById(R.id.rootLayoutId))
             binding.buttonLogin.text = "로그인"
@@ -96,7 +124,7 @@ class HomeActivity : AppCompatActivity() {
      * 로그아웃 메서드
      */
     private fun logout() {
-        val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+        val sp: SharedPreferences = getSharedPreferences()
         val autoLoginEdit: SharedPreferences.Editor = sp.edit()
         autoLoginEdit.clear()
         autoLoginEdit.commit()
@@ -110,11 +138,15 @@ class HomeActivity : AppCompatActivity() {
      * 로그인 상태인지 확인하는 메서드
      */
     private fun isLogin(): Boolean {
-        val sp: SharedPreferences = getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
+        val sp: SharedPreferences = getSharedPreferences()
         val loginEmail: String? = sp.getString("loginEmail", null)
         val loginPassword: String? = sp.getString("loginPassword", null)
         if (loginEmail == null || loginPassword == null)
             return false
         return true
+    }
+
+    private fun getSharedPreferences(): SharedPreferences {
+        return getSharedPreferences("sharedPreferences", MODE_PRIVATE)
     }
 }

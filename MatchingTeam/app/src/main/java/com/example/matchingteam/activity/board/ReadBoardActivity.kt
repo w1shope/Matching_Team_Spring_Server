@@ -14,7 +14,6 @@ import com.example.matchingteam.api.board.BoardApi
 import com.example.matchingteam.api.user.FindUserApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityReadBoardBinding
-import com.example.matchingteam.dto.user.FindUserDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,10 +76,6 @@ class ReadBoardActivity : AppCompatActivity() {
                             binding.buttonUpdate.visibility = View.VISIBLE
                             binding.buttonDelete.visibility = View.VISIBLE
                         }
-//                        else {
-//                            binding.buttonUpdate.visibility = View.GONE
-//                            binding.buttonDelete.visibility = View.GONE
-//                        }
                     }
                 }
             }
