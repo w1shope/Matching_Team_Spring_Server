@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,10 +27,10 @@ class ReadBoardActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val intent = getIntent()
-        val title = intent.getStringExtra("title").toString()
-        val content = intent.getStringExtra("content").toString()
-        val loginEmail = intent.getStringExtra("loginEmail").toString()
-        checkIfCurrentUserIsAuthor(loginEmail, title, content)
+        val title = intent.getStringExtra("title")!!
+        val content = intent.getStringExtra("content")!!
+        updateUI(title, content)
+        checkIfCurrentUserIsAuthor(title, content)
 
         binding.buttonBoardList.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
@@ -53,7 +54,7 @@ class ReadBoardActivity : AppCompatActivity() {
     /**
      * 게시물 정보를 업데이트 하는 메서드
      */
-    private fun updateUI(loginEmail: String, title: String, content: String) {
+    private fun updateUI(title: String, content: String) {
         binding.editTextTitle.setText(title)
         binding.editTextContent.setText(content)
     }
@@ -62,28 +63,29 @@ class ReadBoardActivity : AppCompatActivity() {
      * 게시물 작성자가 본인인지 확인하는 메서드
     -> 게시물 수정, 삭제 버튼 생성에 필요
      */
-    private fun checkIfCurrentUserIsAuthor(email: String, title: String, content: String) {
+    private fun checkIfCurrentUserIsAuthor(title: String, content: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api: FindUserApi = retrofit.create(FindUserApi::class.java)
-        val call: Call<FindUserDto> = api.findByEmail(email)
-        call.enqueue(object : Callback<FindUserDto> {
-            override fun onResponse(call: Call<FindUserDto>, response: Response<FindUserDto>) {
+        val call: Call<Boolean> = api.isWriter(getLoginUserEmail(), title, content)
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        val findUserDto: FindUserDto? = response.body()
-                        updateUI(email, title, content)
-                        if (findUserDto?.email.equals(email)) {
+                        val isWriter: Boolean = response.body()!!
+                        Log.d("isWriter=", isWriter.toString())
+                        if (isWriter) {
                             binding.buttonUpdate.visibility = View.VISIBLE
                             binding.buttonDelete.visibility = View.VISIBLE
-                        } else {
-                            binding.buttonUpdate.visibility = View.GONE
-                            binding.buttonDelete.visibility = View.GONE
                         }
+//                        else {
+//                            binding.buttonUpdate.visibility = View.GONE
+//                            binding.buttonDelete.visibility = View.GONE
+//                        }
                     }
                 }
             }
 
-            override fun onFailure(call: Call<FindUserDto>, t: Throwable) {
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
             }
         })
     }

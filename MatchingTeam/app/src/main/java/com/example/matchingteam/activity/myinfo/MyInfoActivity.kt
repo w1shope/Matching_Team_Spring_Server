@@ -5,9 +5,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
+import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.activity.login.LoginActivity
 import com.example.matchingteam.api.user.MyInfoApi
 import com.example.matchingteam.connection.RetrofitConnection
@@ -29,7 +31,8 @@ class MyInfoActivity : AppCompatActivity() {
         // 이전 Activity에서 사용된 Intent 가져온다.
         val intent: Intent = getIntent()
         val loginEmail: String? = intent.getStringExtra("loginEmail")
-        getUserInfo(loginEmail.toString())
+        val loginPassword: String? = intent.getStringExtra("loginPassword")
+        getUserInfo(loginEmail.toString(), loginPassword.toString())
         binding.buttonLogout.setOnClickListener {
             logout()
         }
@@ -38,10 +41,10 @@ class MyInfoActivity : AppCompatActivity() {
     /**
      * 사용자 정보를 가져온다.
      */
-    private fun getUserInfo(email: String) {
+    private fun getUserInfo(email: String, loginPassword: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api: MyInfoApi = retrofit.create(MyInfoApi::class.java)
-        val call: Call<UserInfoDto> = api.getUserInfo(email)
+        val call: Call<UserInfoDto> = api.getUserInfo(email,loginPassword)
         call.enqueue(object : Callback<UserInfoDto> {
             override fun onResponse(call: Call<UserInfoDto>, response: Response<UserInfoDto>) {
                 if (response.isSuccessful) {
@@ -101,7 +104,7 @@ class MyInfoActivity : AppCompatActivity() {
         autoLoginEdit.commit()
         Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_SHORT).show()
 
-        val intent: Intent = Intent(this@MyInfoActivity, LoginActivity::class.java)
+        val intent: Intent = Intent(this@MyInfoActivity, HomeActivity::class.java)
         startActivity(intent)
     }
 }

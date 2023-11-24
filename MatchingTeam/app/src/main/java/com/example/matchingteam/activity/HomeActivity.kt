@@ -54,7 +54,9 @@ class HomeActivity : AppCompatActivity() {
                 val sp: SharedPreferences =
                     getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
                 val loginEmail = sp.getString("loginEmail", null)
+                val loginPassword = sp.getString("loginPassword", null)
                 intent.putExtra("loginEmail", loginEmail)
+                intent.putExtra("loginPassword", loginPassword)
                 startActivity(intent)
             } else {
                 Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()

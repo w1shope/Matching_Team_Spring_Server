@@ -50,9 +50,7 @@ class RegisterActivity : AppCompatActivity() {
                  * 안드로이드 스튜디오에서 해당 인증코드가 일치하는지 확인한다.
                  * 인증이 완료되면 "학교 인증" -> "인증 완료"로 수정한다.
                  */
-                Log.d("respones->", isSuccessAuthentiate.toString())
                 checkUserEmail(email)
-                Log.d("respones->", isSuccessAuthentiate.toString())
                 binding.editTextRegisterCheckEmailConfirm.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
@@ -183,7 +181,6 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RegisterUserDto>, t: Throwable) {
-                Log.d("Register", t.printStackTrace().toString())
                 Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
@@ -207,7 +204,6 @@ class RegisterActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         authenticateCode = response.body().toString()
-                        Log.d("인증 : ", authenticateCode.toString())
                     } else {
                         Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_SHORT)
                             .show()

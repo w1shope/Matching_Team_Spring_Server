@@ -80,16 +80,6 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button_board_list"
-                android:layout_width="70dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center"
-                android:background="@drawable/button_board_list"
-                android:focusable="false"
-                android:text="목록"
-                android:textColor="@color/white"></Button>
-
-            <Button
                 android:id="@+id/button_update"
                 android:layout_width="70dp"
                 android:layout_height="35dp"
@@ -111,6 +101,17 @@
                 android:text="삭제"
                 android:textColor="@color/white"
                 android:visibility="gone"></Button>
+
+            <Button
+                android:id="@+id/button_board_list"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center"
+                android:background="@drawable/button_board_list"
+                android:focusable="false"
+                android:text="목록"
+                android:textColor="@color/white"></Button>
         </LinearLayout>
     </LinearLayout>
 
