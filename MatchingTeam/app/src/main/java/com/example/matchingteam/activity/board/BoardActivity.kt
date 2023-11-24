@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
+import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.api.board.BoardApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityBoardBinding
@@ -59,6 +60,11 @@ class BoardActivity : AppCompatActivity() {
                 getSharedPreferences("sharedPreferences", Activity.MODE_PRIVATE)
             val loginEmail: String = sp.getString("loginEmail", null).toString().trim()
             findBoard(title, content, stringToTimestamp(createdDate.toString()), viewCnt)
+        }
+
+        binding.buttonBoardList.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
 
