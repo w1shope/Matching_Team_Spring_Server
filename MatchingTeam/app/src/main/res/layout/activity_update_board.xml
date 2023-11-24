@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="100dp"
-                android:text="게시물 정보"
+                android:text="게시물 수정"
                 android:textSize="35dp"
                 android:textStyle="bold"></TextView>
         </LinearLayout>

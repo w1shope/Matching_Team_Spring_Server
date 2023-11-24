@@ -99,7 +99,7 @@ class ReadBoardActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if (response.isSuccessful) {
                     if (response.body()?.equals(true)!!) {
-                        Toast.makeText(applicationContext, "게시물이 삭제되었습니다", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, "게시물이 삭제되었습니다", Toast.LENGTH_SHORT).show()
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent = Intent(this@ReadBoardActivity, BoardActivity::class.java)
                             startActivity(intent)
@@ -109,7 +109,7 @@ class ReadBoardActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -57,21 +57,21 @@ class RegisterActivity : AppCompatActivity() {
                 binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.VISIBLE
                 binding.buttonRegisterCheckEmailConfirmBtn.setOnClickListener {
                     if (isSuccessAuthentiate) {
-                        Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "학생 인증이 완료 되었습니다", Toast.LENGTH_SHORT)
                             .show()
                         binding.buttonRegisterCheckEmailBtn.text = "인증 완료"
                         modifyPrevention()
                         binding.buttonRegisterCheckEmailConfirmBtn.visibility = View.GONE
                         binding.editTextRegisterCheckEmailConfirm.visibility = View.GONE
                     } else {
-                        Toast.makeText(applicationContext, "인증 코드가 일치하지 않습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "인증 코드가 일치하지 않습니다", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
             // "@donga.ac.kr"로 끝나지 않을 때
             else {
-                Toast.makeText(applicationContext, "동아대학교 이메일이 아닙니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "동아대학교 이메일이 아닙니다", Toast.LENGTH_SHORT).show()
                 binding.editTextRegisterEmail.setText("")
             }
         }
@@ -134,7 +134,7 @@ class RegisterActivity : AppCompatActivity() {
                 createUser(email, name, password, studentNum, department, development)
                 isSuccessAuthentiate = false
             } else {
-                Toast.makeText(applicationContext, "학교 인증이 완료되지 않았습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "학교 인증이 완료되지 않았습니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -170,13 +170,13 @@ class RegisterActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        Toast.makeText(applicationContext, "회원가입이 완료되었습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "회원가입이 완료되었습니다", Toast.LENGTH_SHORT)
                             .show()
                         Handler(Looper.getMainLooper()).postDelayed({
                             finish()
                         }, 1500)
                     } else {
-                        Toast.makeText(applicationContext, "회원가입에 실패하였습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "회원가입에 실패하였습니다", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
@@ -184,7 +184,7 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<RegisterUserDto>, t: Throwable) {
                 Log.d("Register", t.printStackTrace().toString())
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -204,19 +204,19 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(
                             applicationContext,
                             "입력하신 메일로 인증코드가 전송되었습니다",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_SHORT
                         ).show()
                         authenticateCode = response.body().toString()
                         Log.d("인증 : ", authenticateCode.toString())
                     } else {
-                        Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "잠시후 다시 시도해주세요", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
 
         })

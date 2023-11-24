@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<LoginUserDto>, response: Response<LoginUserDto>) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        Toast.makeText(applicationContext, "로그인에 성공하였습니다", Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, "로그인에 성공하였습니다", Toast.LENGTH_SHORT).show()
                         // Toast 메시지를 띄우고 1.5초 후에 finish() 호출한다.
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent: Intent =
@@ -61,13 +61,13 @@ class LoginActivity : AppCompatActivity() {
                         }, 750)
                     }
                 } else {
-                    Toast.makeText(applicationContext, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_LONG)
+                    Toast.makeText(applicationContext, "아이디 또는 비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
 
             override fun onFailure(call: Call<LoginUserDto>, t: Throwable) {
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

@@ -8,7 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.matchingteam.api.board.EnrolBoardApi
+import com.example.matchingteam.api.board.BoardApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityEnrolBoardBinding
 import com.example.matchingteam.dto.board.EnrolBoardDto
@@ -34,7 +34,7 @@ class EnrolBoardActivity : AppCompatActivity() {
 
     private fun enrolBoard(title: String, content: String, writerEmail: String) {
         val retrofit = RetrofitConnection.getInstance()
-        val api: EnrolBoardApi = retrofit.create(EnrolBoardApi::class.java)
+        val api: BoardApi = retrofit.create(BoardApi::class.java)
         val call: Call<Boolean> =
             api.enrolBoard(EnrolBoardDto(title, content, writerEmail))
         call.enqueue(object : Callback<Boolean> {
@@ -44,20 +44,19 @@ class EnrolBoardActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        Toast.makeText(applicationContext, "정상적으로 등록되었습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "정상적으로 등록되었습니다", Toast.LENGTH_SHORT)
                             .show()
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent: Intent =
                                 Intent(this@EnrolBoardActivity, BoardActivity::class.java)
                             startActivity(intent)
-//                            finish()
                         }, 1500)
                     }
                 }
             }
 
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
             }
         })
     }

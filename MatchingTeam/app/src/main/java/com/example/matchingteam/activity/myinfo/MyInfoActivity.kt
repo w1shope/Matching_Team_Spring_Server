@@ -57,7 +57,7 @@ class MyInfoActivity : AppCompatActivity() {
                     }
                     // 사용자 정보를 가져올 수 없으면 로그인창으로 이동
                     else {
-                        Toast.makeText(applicationContext, "사용자 정보를 가져올 수 없습니다", Toast.LENGTH_LONG)
+                        Toast.makeText(applicationContext, "사용자 정보를 가져올 수 없습니다", Toast.LENGTH_SHORT)
                             .show()
                         Handler().postDelayed({
                             val intent: Intent =
@@ -69,7 +69,7 @@ class MyInfoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<UserInfoDto>, t: Throwable) {
-                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "네트워크에 문제가 발생하였습니다", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed({
                     val intent: Intent = Intent(this@MyInfoActivity, LoginActivity::class.java)
                 }, 1500)
@@ -99,7 +99,7 @@ class MyInfoActivity : AppCompatActivity() {
         val autoLoginEdit: SharedPreferences.Editor = sp.edit()
         autoLoginEdit.clear()
         autoLoginEdit.commit()
-        Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_SHORT).show()
 
         val intent: Intent = Intent(this@MyInfoActivity, LoginActivity::class.java)
         startActivity(intent)

@@ -43,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
                 val intent: Intent = Intent(this, BoardActivity::class.java)
                 startActivity(intent)
             } else {
-                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()
             }
         }
         binding.buttonMyinfo.setOnClickListener {
@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
                 intent.putExtra("loginEmail", loginEmail)
                 startActivity(intent)
             } else {
-                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -98,7 +98,7 @@ class HomeActivity : AppCompatActivity() {
         val autoLoginEdit: SharedPreferences.Editor = sp.edit()
         autoLoginEdit.clear()
         autoLoginEdit.commit()
-        Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "로그아웃이 완료되었습니다", Toast.LENGTH_SHORT).show()
 
         val intent: Intent = Intent(this@HomeActivity, HomeActivity::class.java)
         startActivity(intent)
