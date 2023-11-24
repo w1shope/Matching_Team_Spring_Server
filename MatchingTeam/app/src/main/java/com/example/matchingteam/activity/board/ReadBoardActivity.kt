@@ -29,7 +29,7 @@ class ReadBoardActivity : AppCompatActivity() {
         val title = intent.getStringExtra("title").toString()
         val content = intent.getStringExtra("content").toString()
         val loginEmail = intent.getStringExtra("loginEmail").toString()
-        tmp(loginEmail, title, content)
+        checkIfCurrentUserIsAuthor(loginEmail, title, content)
 
         binding.buttonBoardList.setOnClickListener {
             val intent = Intent(this, BoardActivity::class.java)
@@ -39,7 +39,10 @@ class ReadBoardActivity : AppCompatActivity() {
         }
 
         binding.buttonUpdate.setOnClickListener {
-            val intent = Intent(this, BoardActivity::class.java)
+            val intent = Intent(this, UpdateBoardActivity::class.java)
+            intent.putExtra("title", title)
+            intent.putExtra("content", content)
+            startActivity(intent)
         }
 
         binding.buttonDelete.setOnClickListener {
@@ -59,7 +62,7 @@ class ReadBoardActivity : AppCompatActivity() {
      * 게시물 작성자가 본인인지 확인하는 메서드
     -> 게시물 수정, 삭제 버튼 생성에 필요
      */
-    private fun tmp(email: String, title: String, content: String) {
+    private fun checkIfCurrentUserIsAuthor(email: String, title: String, content: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api: FindUserApi = retrofit.create(FindUserApi::class.java)
         val call: Call<FindUserDto> = api.findByEmail(email)
