@@ -3,6 +3,7 @@ package com.example.matchingteam.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -70,6 +71,10 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.buttonDauHomepage.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("donga.ac.kr"))
+            startActivity(intent)
         }
     }
 
