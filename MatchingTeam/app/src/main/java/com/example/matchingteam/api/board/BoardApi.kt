@@ -1,6 +1,7 @@
 package com.example.matchingteam.api.board
 
 import com.example.matchingteam.domain.board.Board
+import com.example.matchingteam.dto.board.BoardStatusDto
 import com.example.matchingteam.dto.board.EnrolBoardDto
 import com.example.matchingteam.dto.board.ListBoardDto
 import com.example.matchingteam.dto.board.UpdateBoardDto
@@ -42,4 +43,7 @@ interface BoardApi {
     fun updateBoard(
         @Body dto: UpdateBoardDto
     ): Call<Boolean>
+
+    @PATCH("/api/boards/update")
+    fun updateBoardStaus(@Body dto: BoardStatusDto, @Query("status") status: Int): Call<Boolean>
 }

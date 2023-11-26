@@ -1,12 +1,19 @@
 package com.example.matchingteam.activity.myinfo
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.AlertDialog.Builder
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import com.example.matchingteam.R
 import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.activity.board.ReadBoardActivity
@@ -16,6 +23,7 @@ import com.example.matchingteam.databinding.ActivityBoardBinding
 import com.example.matchingteam.databinding.ActivityEnrolBoardBinding
 import com.example.matchingteam.databinding.ActivityEnrolBoardListBinding
 import com.example.matchingteam.domain.board.Board
+import com.example.matchingteam.dto.board.BoardStatusDto
 import com.example.matchingteam.dto.board.ListBoardDto
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,6 +43,9 @@ class EnrolBoardListActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
+        setUpButtonClick(binding.buttonStatus1, binding.textViewTitle1, binding.textViewContent1)
+        setUpButtonClick(binding.buttonStatus2, binding.textViewTitle2, binding.textViewContent2)
+        setUpButtonClick(binding.buttonStatus3, binding.textViewTitle3, binding.textViewContent3)
     }
 
     /**
@@ -93,7 +104,12 @@ class EnrolBoardListActivity : AppCompatActivity() {
     /**
      * 특정 게시물 가져오기
      */
-    private fun findBoard(title: String, content: String, createdDate: Timestamp, viewCnt: Int) {
+    private fun findBoard(
+        title: String,
+        content: String,
+        createdDate: Timestamp,
+        viewCnt: Int
+    ) {
         val retrofit = RetrofitConnection.getInstance()
         val api: BoardApi = retrofit.create(BoardApi::class.java)
         val call: Call<Board> = api.findBoard(title, content, createdDate, viewCnt)
@@ -202,5 +218,45 @@ class EnrolBoardListActivity : AppCompatActivity() {
     private fun getLoginUserEmail(): String? {
         val sp: SharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE)
         return sp.getString("loginEmail", null)
+    }
+
+    fun setUpButtonClick(button: Button, titleView: TextView, contentView: TextView) {
+        button.setOnClickListener {
+            AlertDialog.Builder(this).run {
+                setTitle("안내")
+                    .setMessage("모집 상태를 변경하시겠습니까?")
+                    .setPositiveButton("완료") { dialog, which ->
+                        if (which == DialogInterface.BUTTON_POSITIVE) {
+                            val newStatus = if (button.text == "모집중") 0 else 1
+                            val newButtonText = if (button.text == "모집중") "모집완료" else "모집중"
+                            val newBackground = if (button.text == "모집중") R.drawable.red_btn else R.drawable.green_btn
+                            button.text = newButtonText
+                            button.setBackgroundResource(newBackground)
+                            updateBoardStatus(titleView.text.toString().trim(), contentView.text.toString().trim(), newStatus)
+                        }
+                    }
+                    .setNegativeButton("취소", null)
+                    .show()
+            }
+        }
+    }
+
+    private fun updateBoardStatus(title: String, content: String, status: Int) {
+        val retrofit = RetrofitConnection.getInstance()
+        val api: BoardApi = retrofit.create(BoardApi::class.java)
+        val call: Call<Boolean> = api.updateBoardStaus(BoardStatusDto(title, content), status)
+        call.enqueue(object: Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                Log.d("title, content, status : ", title + content + status)
+                if(response.isSuccessful) {
+                    if(response.body() != null) {
+                        Toast.makeText(applicationContext, "모집 상태가 정상적으로 변경되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+            }
+        })
     }
 }
