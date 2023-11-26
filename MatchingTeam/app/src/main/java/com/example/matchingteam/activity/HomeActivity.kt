@@ -74,12 +74,22 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         binding.buttonDauHomepage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("donga.ac.kr"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.donga.ac.kr"))
             startActivity(intent)
         }
         binding.buttonWrite.setOnClickListener {
             val intent = Intent(this@HomeActivity, EnrolBoardListActivity::class.java)
             startActivity(intent)
+        }
+        binding.buttonWrite.setOnClickListener {
+            val isLogin: Boolean = isLogin()
+            // 팀 프로젝트 화면으로 이동
+            if (isLogin) {
+                val intent: Intent = Intent(this, BoardActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
