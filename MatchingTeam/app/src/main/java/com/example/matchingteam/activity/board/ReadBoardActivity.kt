@@ -71,7 +71,6 @@ class ReadBoardActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         val isWriter: Boolean = response.body()!!
-                        Log.d("isWriter=", isWriter.toString())
                         if (isWriter) {
                             binding.buttonUpdate.visibility = View.VISIBLE
                             binding.buttonDelete.visibility = View.VISIBLE

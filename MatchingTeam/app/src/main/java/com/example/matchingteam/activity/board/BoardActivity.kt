@@ -174,7 +174,6 @@ class BoardActivity : AppCompatActivity() {
         viewCnt: Int,
         statusId: Int
     ) {
-        Log.d("statusId1=", statusId.toString())
         binding.mainLayout1.visibility = View.VISIBLE
         binding.textViewTitle1.text = title
         binding.textViewWriter1.text = "테스트"
@@ -196,7 +195,6 @@ class BoardActivity : AppCompatActivity() {
         viewCnt: Int,
         statusId: Int
     ) {
-        Log.d("statusId2=", statusId.toString())
         binding.mainLayout2.visibility = View.VISIBLE
         binding.textViewTitle2.text = title
         binding.textViewContent2.text = content
