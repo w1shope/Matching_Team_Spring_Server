@@ -13,5 +13,7 @@ data class Board(
     @SerializedName("viewCnt")
     var viewCnt: Int,
     @SerializedName("createdDate")
-    var createdDate: Timestamp
+    var createdDate: Timestamp,
+    @SerializedName("statusId")
+    var statusId: Int
 )

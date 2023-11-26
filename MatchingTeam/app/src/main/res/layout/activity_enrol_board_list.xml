@@ -11,12 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="프로젝트 현황"
+        android:text="내가 작성한 게시물"
         android:textSize="35dp"
         android:textStyle="bold"></TextView>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/mainLayout1"
         android:layout_width="390dp"
         android:layout_height="100dp"
@@ -47,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
-                android:text="토이 프로젝트 하실분 구합니다!!"
+                android:text="출력할 제목"
                 android:textSize="20dp"
                 android:textStyle="bold"></TextView>
 
@@ -60,7 +59,7 @@
                 android:ellipsize="end"
                 android:ems="15"
                 android:maxLines="1"
-                android:text="부산 지역문제를 해결하기 위한 앱을 만들고자 합니다. 현재 백엔드 1명, PM 1명, 프론트 1명으로 구성되어있으며"
+                android:text="출력할 내용"
                 android:textSize="15dp"></TextView>
 
             <LinearLayout

@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity.myinfo.EnrolBoardListActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.board.UpdateBoardActivity"
             android:exported="false" />
         <activity

@@ -4,14 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.example.matchingteam.R
 import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.api.board.BoardApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityBoardBinding
 import com.example.matchingteam.domain.board.Board
+import com.example.matchingteam.dto.board.ListBoardDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,9 +20,10 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 class BoardActivity : AppCompatActivity() {
+    lateinit var binding: ActivityBoardBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityBoardBinding.inflate(layoutInflater)
+        binding = ActivityBoardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         boards()
@@ -74,12 +76,12 @@ class BoardActivity : AppCompatActivity() {
     private fun boards() {
         val retrofit = RetrofitConnection.getInstance()
         val api: BoardApi = retrofit.create(BoardApi::class.java)
-        val call: Call<List<Board>?> = api.boards()
-        call.enqueue(object : Callback<List<Board>?> {
-            override fun onResponse(call: Call<List<Board>?>, response: Response<List<Board>?>) {
+        val call: Call<List<ListBoardDto>?> = api.boards()
+        call.enqueue(object : Callback<List<ListBoardDto>?> {
+            override fun onResponse(call: Call<List<ListBoardDto>?>, response: Response<List<ListBoardDto>?>) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        val boards: List<Board>? = response.body()
+                        val boards: List<ListBoardDto>? = response.body()
                         if (boards != null) {
                             for (index in boards.indices) {
                                 when (index) {
@@ -87,21 +89,24 @@ class BoardActivity : AppCompatActivity() {
                                         boards.get(index).title,
                                         boards.get(index).content,
                                         boards.get(index).createdDate,
-                                        "조회수 : " + boards.get(index).viewCnt.toString()
+                                        boards.get(index).viewCnt,
+                                        boards.get(index).status
                                     )
 
                                     1 -> dynamicLayout2(
                                         boards.get(index).title,
                                         boards.get(index).content,
                                         boards.get(index).createdDate,
-                                        "조회수 : " + boards.get(index).viewCnt.toString()
+                                        boards.get(index).viewCnt,
+                                        boards.get(index).status
                                     )
 
                                     else -> dynamicLayout3(
                                         boards.get(index).title,
                                         boards.get(index).content,
                                         boards.get(index).createdDate,
-                                        "조회수 : " + boards.get(index).viewCnt.toString()
+                                        boards.get(index).viewCnt,
+                                        boards.get(index).status
                                     )
                                 }
                             }
@@ -111,7 +116,7 @@ class BoardActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Board>?>, t: Throwable) {}
+            override fun onFailure(call: Call<List<ListBoardDto>?>, t: Throwable) {}
         })
     }
 
@@ -166,44 +171,62 @@ class BoardActivity : AppCompatActivity() {
         title: String,
         content: String,
         createdDate: Timestamp,
-        viewCnt: String
+        viewCnt: Int,
+        statusId: Int
     ) {
-        val binding = ActivityBoardBinding.bind(findViewById(R.id.rootBoardLayout))
-        binding.textViewTitle1.text = title
-        binding.textViewContent1.text = content
-        binding.textViewCreatedDate1.text = "작성일자 : " + timestampToStr(createdDate)
-        binding.textViewViewCnt1.text = viewCnt
+        Log.d("statusId1=", statusId.toString())
         binding.mainLayout1.visibility = View.VISIBLE
+        binding.textViewTitle1.text = title
+        binding.textViewWriter1.text = "테스트"
+        binding.textViewContent1.text = content
+        binding.textViewCreatedDate1.text = "작성일자 : ${timestampToStr(createdDate)}"
+        binding.textViewViewCnt1.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate1.text = createdDate.toString()
+        binding.buttonStatus1.text =
+            when(statusId) {
+                0 -> "모집완료"
+                else -> "모집중"
+            }
     }
 
     private fun dynamicLayout2(
         title: String,
         content: String,
         createdDate: Timestamp,
-        viewCnt: String
+        viewCnt: Int,
+        statusId: Int
     ) {
-        val binding = ActivityBoardBinding.bind(findViewById(R.id.rootBoardLayout))
+        Log.d("statusId2=", statusId.toString())
+        binding.mainLayout2.visibility = View.VISIBLE
         binding.textViewTitle2.text = title
         binding.textViewContent2.text = content
-        binding.textViewCreatedDate2.text = "작성일자 : " + timestampToStr(createdDate)
-        binding.textViewViewCnt2.text = viewCnt
-        binding.mainLayout2.visibility = View.VISIBLE
+        binding.textViewCreatedDate2.text = "작성일자 : ${timestampToStr(createdDate)}"
+        binding.textViewViewCnt2.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate2.text = createdDate.toString()
+        binding.buttonStatus2.text =
+            when(statusId) {
+                0 -> "모집완료"
+                else -> "모집중"
+            }
     }
 
     private fun dynamicLayout3(
         title: String,
         content: String,
         createdDate: Timestamp,
-        viewCnt: String
+        viewCnt: Int,
+        statusId: Int
     ) {
-        val binding = ActivityBoardBinding.bind(findViewById(R.id.rootBoardLayout))
+        binding.mainLayout3.visibility = View.VISIBLE
         binding.textViewTitle3.text = title
         binding.textViewContent3.text = content
         binding.textViewCreatedDate3.text = "작성일자 : " + timestampToStr(createdDate)
-        binding.textViewViewCnt3.text = viewCnt
-        binding.mainLayout3.visibility = View.VISIBLE
+        binding.textViewViewCnt3.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate3.text = createdDate.toString()
+        binding.buttonStatus3.text =
+            when(statusId) {
+                0 -> "모집완료"
+                else -> "모집중"
+            }
     }
 }

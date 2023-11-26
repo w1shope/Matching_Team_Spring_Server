@@ -15,5 +15,8 @@ interface FindUserApi {
     ): Call<Boolean>
 
     @GET("/api/users/{email}/{password}")
-    fun userInfo(@Path("email") email: String, @Path("password") password: String): Call<FindUserDto>
+    fun userInfo(
+        @Path("email") email: String,
+        @Path("password") password: String
+    ): Call<FindUserDto>
 }

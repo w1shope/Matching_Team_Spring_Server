@@ -36,7 +36,7 @@ class EnrolBoardActivity : AppCompatActivity() {
         val retrofit = RetrofitConnection.getInstance()
         val api: BoardApi = retrofit.create(BoardApi::class.java)
         val call: Call<Boolean> =
-            api.enrolBoard(EnrolBoardDto(title, content, writerEmail))
+            api.enrolBoard(EnrolBoardDto(title, content, writerEmail, 1))
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(
                 call: Call<Boolean>,

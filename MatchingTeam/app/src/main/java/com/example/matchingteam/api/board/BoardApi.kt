@@ -2,6 +2,7 @@ package com.example.matchingteam.api.board
 
 import com.example.matchingteam.domain.board.Board
 import com.example.matchingteam.dto.board.EnrolBoardDto
+import com.example.matchingteam.dto.board.ListBoardDto
 import com.example.matchingteam.dto.board.UpdateBoardDto
 import retrofit2.Call
 import retrofit2.http.Body
@@ -14,7 +15,7 @@ import java.sql.Timestamp
 
 interface BoardApi {
     @GET("/api/boards")
-    fun boards(): Call<List<Board>?>
+    fun boards(): Call<List<ListBoardDto>?>
 
     @GET("/api/boards/read")
     fun findBoard(
