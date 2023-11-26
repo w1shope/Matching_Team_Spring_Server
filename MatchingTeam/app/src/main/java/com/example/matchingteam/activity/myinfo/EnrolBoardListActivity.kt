@@ -2,25 +2,21 @@ package com.example.matchingteam.activity.myinfo
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.AlertDialog.Builder
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
 import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.activity.board.ReadBoardActivity
 import com.example.matchingteam.api.board.BoardApi
 import com.example.matchingteam.connection.RetrofitConnection
-import com.example.matchingteam.databinding.ActivityBoardBinding
-import com.example.matchingteam.databinding.ActivityEnrolBoardBinding
 import com.example.matchingteam.databinding.ActivityEnrolBoardListBinding
 import com.example.matchingteam.domain.board.Board
 import com.example.matchingteam.dto.board.BoardStatusDto
@@ -46,6 +42,9 @@ class EnrolBoardListActivity : AppCompatActivity() {
         setUpButtonClick(binding.buttonStatus1, binding.textViewTitle1, binding.textViewContent1)
         setUpButtonClick(binding.buttonStatus2, binding.textViewTitle2, binding.textViewContent2)
         setUpButtonClick(binding.buttonStatus3, binding.textViewTitle3, binding.textViewContent3)
+        setLayoutClickListener(binding.mainLayout1, binding.textViewTitle1, binding.textViewContent1)
+        setLayoutClickListener(binding.mainLayout2, binding.textViewTitle2, binding.textViewContent2)
+        setLayoutClickListener(binding.mainLayout3, binding.textViewTitle3, binding.textViewContent3)
     }
 
     /**
@@ -229,10 +228,15 @@ class EnrolBoardListActivity : AppCompatActivity() {
                         if (which == DialogInterface.BUTTON_POSITIVE) {
                             val newStatus = if (button.text == "모집중") 0 else 1
                             val newButtonText = if (button.text == "모집중") "모집완료" else "모집중"
-                            val newBackground = if (button.text == "모집중") R.drawable.red_btn else R.drawable.green_btn
+                            val newBackground =
+                                if (button.text == "모집중") R.drawable.red_btn else R.drawable.green_btn
                             button.text = newButtonText
                             button.setBackgroundResource(newBackground)
-                            updateBoardStatus(titleView.text.toString().trim(), contentView.text.toString().trim(), newStatus)
+                            updateBoardStatus(
+                                titleView.text.toString().trim(),
+                                contentView.text.toString().trim(),
+                                newStatus
+                            )
                         }
                     }
                     .setNegativeButton("취소", null)
@@ -245,12 +249,16 @@ class EnrolBoardListActivity : AppCompatActivity() {
         val retrofit = RetrofitConnection.getInstance()
         val api: BoardApi = retrofit.create(BoardApi::class.java)
         val call: Call<Boolean> = api.updateBoardStaus(BoardStatusDto(title, content), status)
-        call.enqueue(object: Callback<Boolean> {
+        call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 Log.d("title, content, status : ", title + content + status)
-                if(response.isSuccessful) {
-                    if(response.body() != null) {
-                        Toast.makeText(applicationContext, "모집 상태가 정상적으로 변경되었습니다", Toast.LENGTH_SHORT).show()
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        Toast.makeText(
+                            applicationContext,
+                            "모집 상태가 정상적으로 변경되었습니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -258,5 +266,14 @@ class EnrolBoardListActivity : AppCompatActivity() {
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
             }
         })
+    }
+
+    private fun setLayoutClickListener(layout: View, titleView: TextView, contentView: TextView) {
+        layout.setOnClickListener {
+            val intent = Intent(this@EnrolBoardListActivity, ReadBoardActivity::class.java)
+            intent.putExtra("title", titleView.text.toString())
+            intent.putExtra("content", contentView.text.toString())
+            startActivity(intent)
+        }
     }
 }
