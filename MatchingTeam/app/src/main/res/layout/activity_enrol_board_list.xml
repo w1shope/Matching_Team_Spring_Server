@@ -32,8 +32,9 @@
             android:layout_height="90dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/button_style"
+            android:background="@drawable/green_btn"
             android:text="모집 중"
+            android:textColor="@color/white"
             android:textSize="20dp"></Button>
 
         <LinearLayout
@@ -127,8 +128,9 @@
             android:layout_height="90dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/button_style"
+            android:background="@drawable/green_btn"
             android:text="모집 중"
+            android:textColor="@color/white"
             android:textSize="20dp"></Button>
 
         <LinearLayout
@@ -221,8 +223,9 @@
             android:layout_height="90dp"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/button_style"
+            android:background="@drawable/green_btn"
             android:text="모집 중"
+            android:textColor="@color/white"
             android:textSize="20dp"></Button>
 
         <LinearLayout
