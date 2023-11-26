@@ -1,6 +1,8 @@
 package com.example.matchingteam.activity
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -78,14 +80,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.buttonWrite.setOnClickListener {
-            val intent = Intent(this@HomeActivity, EnrolBoardListActivity::class.java)
-            startActivity(intent)
-        }
-        binding.buttonWrite.setOnClickListener {
             val isLogin: Boolean = isLogin()
             // 팀 프로젝트 화면으로 이동
             if (isLogin) {
-                val intent: Intent = Intent(this, BoardActivity::class.java)
+                val intent: Intent = Intent(this, EnrolBoardListActivity::class.java)
                 startActivity(intent)
             } else {
                 Toast.makeText(applicationContext, "로그인 후 사용가능합니다", Toast.LENGTH_SHORT).show()
@@ -107,9 +105,12 @@ class HomeActivity : AppCompatActivity() {
             override fun onResponse(call: Call<FindUserDto>, response: Response<FindUserDto>) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        binding.textViewWriteCount.text = "작성한 게시물 : ${response.body()!!.writeCount.toString()}개"
-                        binding.textViewCommentCount.text = "작성한 댓글 : ${response.body()!!.commentCount.toString()}개"
-                        binding.textViewProejectCount.text = "진행중인 프로젝트 : ${response.body()!!.projectCount.toString()}개"
+                        binding.textViewWriteCount.text =
+                            "작성한 게시물 : ${response.body()!!.writeCount.toString()}개"
+                        binding.textViewCommentCount.text =
+                            "작성한 댓글 : ${response.body()!!.commentCount.toString()}개"
+                        binding.textViewProejectCount.text =
+                            "진행중인 프로젝트 : ${response.body()!!.projectCount.toString()}개"
                     }
                 }
             }
