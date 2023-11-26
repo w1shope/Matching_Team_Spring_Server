@@ -36,6 +36,10 @@ class MyInfoActivity : AppCompatActivity() {
         binding.buttonLogout.setOnClickListener {
             logout()
         }
+        binding.buttonWrite.setOnClickListener {
+            val intent = Intent(this, EnrolBoardListActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /**
