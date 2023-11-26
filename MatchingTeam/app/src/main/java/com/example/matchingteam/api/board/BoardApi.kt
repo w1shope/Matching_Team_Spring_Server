@@ -10,12 +10,15 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.sql.Timestamp
 
 interface BoardApi {
     @GET("/api/boards")
     fun boards(): Call<List<ListBoardDto>?>
+    @GET("/api/boards/list/{email}")
+    fun userBoards(@Path("email") email: String): Call<List<ListBoardDto>>
 
     @GET("/api/boards/read")
     fun findBoard(
