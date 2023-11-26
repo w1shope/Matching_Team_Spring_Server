@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
@@ -40,6 +39,10 @@ class MyInfoActivity : AppCompatActivity() {
             val intent = Intent(this, EnrolBoardListActivity::class.java)
             startActivity(intent)
         }
+        binding.buttonBoardList.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /**
@@ -48,7 +51,7 @@ class MyInfoActivity : AppCompatActivity() {
     private fun getUserInfo(email: String, loginPassword: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api: MyInfoApi = retrofit.create(MyInfoApi::class.java)
-        val call: Call<UserInfoDto> = api.getUserInfo(email,loginPassword)
+        val call: Call<UserInfoDto> = api.getUserInfo(email, loginPassword)
         call.enqueue(object : Callback<UserInfoDto> {
             override fun onResponse(call: Call<UserInfoDto>, response: Response<UserInfoDto>) {
                 if (response.isSuccessful) {
