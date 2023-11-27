@@ -1,5 +1,7 @@
 package com.example.matchingteam.connection
 
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -11,12 +13,15 @@ class RetrofitConnection {
         private const val BASE_URL = "https://api.airvisual.com/v2/"
         private var INSTANCE: Retrofit? = null
 
+        var gson = GsonBuilder().setLenient().create()
         fun getInstance(): Retrofit {
+            OkHttpClient.Builder().retryOnConnectionFailure(false)
             if (INSTANCE == null) {  // null인 경우에만 생성
                 INSTANCE = Retrofit.Builder()
                     .baseUrl("http://10.0.2.2:8080")  // API 베이스 URL 설정
-                    .addConverterFactory(GsonConverterFactory.create()) // 1)
+                    .addConverterFactory(GsonConverterFactory.create(gson)) // 1)
                     .build()
+
             }
             return INSTANCE!!
         }
