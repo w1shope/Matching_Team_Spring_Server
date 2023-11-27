@@ -48,7 +48,8 @@
             android:layout_gravity="right"
             android:layout_marginRight="30dp"
             android:background="@drawable/rounded_button"
-            android:text="학생 인증"></Button>
+            android:text="학생 인증"
+            android:textColor="@color/white"></Button>
 
         <EditText
             android:id="@+id/editTextRegisterCheckEmailConfirm"
@@ -68,7 +69,8 @@
             android:layout_gravity="right"
             android:layout_marginRight="30dp"
             android:background="@drawable/rounded_button"
-            android:text="인증하기"
+            android:text="인증"
+            android:textColor="@color/white"
             android:visibility="gone"></Button>
 
         <EditText

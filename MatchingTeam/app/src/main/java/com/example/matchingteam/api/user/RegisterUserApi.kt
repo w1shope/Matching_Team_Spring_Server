@@ -9,11 +9,11 @@ import retrofit2.http.Query
 
 interface RegisterUserApi {
     @POST("/api/users")
-    fun saveUser(@Body registerUserDto: RegisterUserDto): Call<RegisterUserDto>
+    fun saveUser(@Body registerUserDto: RegisterUserDto): Call<Long>
 
     @GET("/api/authenticate")
     fun userEmailAuthentication(@Query("address") address: String): Call<String>
 
     @POST("/api/authenticate")
-    fun userEmailAuthenticationConfirm(@Body authenticateCode: String?): Call<Boolean>
+    fun userEmailAuthenticationConfirm(@Body authenticateCode: Int): Call<Boolean>
 }
