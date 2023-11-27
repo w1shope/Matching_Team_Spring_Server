@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="65dp"
             android:orientation="vertical">
 
             <TextView
@@ -49,16 +49,6 @@
                 android:text="작성한 댓글 : X개"
                 android:textColor="@color/white"
                 android:textSize="17dp"></TextView>
-
-            <TextView
-                android:id="@+id/textView_proeject_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="진행중인 프로젝트 : X개"
-                android:textColor="@color/white"
-                android:textSize="17dp"></TextView>
-
         </LinearLayout>
     </LinearLayout>
 

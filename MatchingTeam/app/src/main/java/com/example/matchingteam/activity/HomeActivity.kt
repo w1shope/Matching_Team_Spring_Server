@@ -1,13 +1,10 @@
 package com.example.matchingteam.activity
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
@@ -23,7 +20,6 @@ import com.example.matchingteam.dto.user.FindUserDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 class HomeActivity : AppCompatActivity() {
     lateinit var binding: ActivityHomeBinding
@@ -107,10 +103,13 @@ class HomeActivity : AppCompatActivity() {
                     if (response.body() != null) {
                         binding.textViewWriteCount.text =
                             "작성한 게시물 : ${response.body()!!.writeCount.toString()}개"
-                        binding.textViewCommentCount.text =
-                            "작성한 댓글 : ${response.body()!!.commentCount.toString().toInt() - 1}개"
-                        binding.textViewProejectCount.text =
-                            "진행중인 프로젝트 : ${response.body()!!.projectCount.toString()}개"
+                        val commentCount = response.body()?.commentCount ?: 0
+                        val displayCount = if (commentCount == 0) {
+                            "0"
+                        } else {
+                            (commentCount - 1).toString()
+                        }
+                        binding.textViewCommentCount.text = "작성한 댓글 : ${displayCount}개"
                     }
                 }
             }
