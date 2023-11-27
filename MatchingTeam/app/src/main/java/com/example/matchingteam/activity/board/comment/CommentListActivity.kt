@@ -1,24 +1,20 @@
 package com.example.matchingteam.activity.board.comment
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.example.matchingteam.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.activity.HomeActivity
 import com.example.matchingteam.activity.board.ReadBoardActivity
-import com.example.matchingteam.activity.myinfo.MyInfoActivity
 import com.example.matchingteam.api.board.comment.CommentApi
 import com.example.matchingteam.connection.RetrofitConnection
 import com.example.matchingteam.databinding.ActivityCommentListBinding
-import com.example.matchingteam.domain.board.Board
 import com.example.matchingteam.dto.board.ListBoardDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
@@ -36,7 +32,11 @@ class CommentListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        setLayoutClickListener(binding.mainLayout1, binding.textViewTitle1, binding.textViewContent1)
+        setLayoutClickListener(
+            binding.mainLayout1,
+            binding.textViewTitle1,
+            binding.textViewContent1
+        )
     }
 
     /**
