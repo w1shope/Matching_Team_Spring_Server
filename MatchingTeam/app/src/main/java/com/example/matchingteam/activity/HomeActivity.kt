@@ -108,7 +108,7 @@ class HomeActivity : AppCompatActivity() {
                         binding.textViewWriteCount.text =
                             "작성한 게시물 : ${response.body()!!.writeCount.toString()}개"
                         binding.textViewCommentCount.text =
-                            "작성한 댓글 : ${response.body()!!.commentCount.toString()}개"
+                            "작성한 댓글 : ${response.body()!!.commentCount.toString().toInt() - 1}개"
                         binding.textViewProejectCount.text =
                             "진행중인 프로젝트 : ${response.body()!!.projectCount.toString()}개"
                     }

@@ -23,8 +23,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.sql.Timestamp
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime.now
 
 
 class ReadBoardActivity : AppCompatActivity() {
@@ -70,7 +68,7 @@ class ReadBoardActivity : AppCompatActivity() {
                     content
                 )
             } else {
-                deleteComment(binding.editTextComment.text.toString())
+                deleteComment(binding.editTextComment.text.toString(), getLoginEmail())
             }
         }
     }
@@ -222,19 +220,28 @@ class ReadBoardActivity : AppCompatActivity() {
         })
     }
 
-    private fun deleteComment(content: String) {
+    private fun deleteComment(content: String, loginEmail: String) {
         val retrofit = RetrofitConnection.getInstance()
         val api = retrofit.create(CommentApi::class.java)
-        val call = api.deleteComment(content)
+        val call = api.deleteComment(content, loginEmail)
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
-                        Toast.makeText(applicationContext, "댓글을 정상적으로 삭제하였습니다", Toast.LENGTH_SHORT)
-                            .show()
-                        binding.editTextComment.visibility = View.GONE
-                        binding.textViewCommentWriter.visibility = View.GONE
-                        binding.textViewCommentCreatedDate.visibility = View.GONE
+                        if (response.body() == false) {
+                            Toast.makeText(applicationContext, "댓글 작성자만 삭제할 수 있습니다", Toast.LENGTH_SHORT)
+                                .show()
+                        } else {
+                            Toast.makeText(
+                                applicationContext,
+                                "댓글을 정상적으로 삭제하였습니다",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                            binding.editTextComment.visibility = View.GONE
+                            binding.textViewCommentWriter.visibility = View.GONE
+                            binding.textViewCommentCreatedDate.visibility = View.GONE
+                        }
 
                         val intent = getIntent()
                         finish()
@@ -248,5 +255,10 @@ class ReadBoardActivity : AppCompatActivity() {
             override fun onFailure(call: Call<Boolean>, t: Throwable) {
             }
         })
+    }
+
+    private fun getLoginEmail(): String {
+        val sp = getSharedPreferences("sharedPreferences", MODE_PRIVATE)
+        return sp.getString("loginEmail", null)!!
     }
 }

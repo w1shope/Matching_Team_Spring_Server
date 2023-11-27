@@ -1,6 +1,7 @@
 package com.example.matchingteam.api.board.comment
 
-import com.example.matchingteam.dto.board.comment.CommentWriterDto
+import com.example.matchingteam.domain.board.Board
+import com.example.matchingteam.dto.board.ListBoardDto
 import com.example.matchingteam.dto.board.comment.EnrolCommentDto
 import com.example.matchingteam.dto.board.comment.FindCommentDto
 import retrofit2.Call
@@ -10,7 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.sql.Timestamp
 
 interface CommentApi {
     @POST("/api/comments")
@@ -20,5 +20,8 @@ interface CommentApi {
     fun findComment(@Path("title") title: String, @Path("content") content: String): Call<FindCommentDto>
 
     @DELETE("/api/comments/{content}")
-    fun deleteComment(@Path("content") comment: String): Call<Boolean>
+    fun deleteComment(@Path("content") comment: String, @Query("loginEmail") loginEmail: String): Call<Boolean>
+
+    @GET("/api/comments/{email}")
+    fun findCommentAll(@Path("email") email: String): Call<List<ListBoardDto>>
 }

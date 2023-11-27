@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.R
 import com.example.matchingteam.activity.HomeActivity
+import com.example.matchingteam.activity.board.comment.CommentListActivity
 import com.example.matchingteam.activity.login.LoginActivity
 import com.example.matchingteam.api.user.MyInfoApi
 import com.example.matchingteam.connection.RetrofitConnection
@@ -41,6 +42,10 @@ class MyInfoActivity : AppCompatActivity() {
         }
         binding.buttonBoardList.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+        binding.textViewCommentList.setOnClickListener {
+            val intent = Intent(this@MyInfoActivity, CommentListActivity::class.java)
             startActivity(intent)
         }
     }

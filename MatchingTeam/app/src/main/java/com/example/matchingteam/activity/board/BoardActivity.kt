@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.matchingteam.activity.HomeActivity
@@ -78,7 +77,10 @@ class BoardActivity : AppCompatActivity() {
         val api: BoardApi = retrofit.create(BoardApi::class.java)
         val call: Call<List<ListBoardDto>?> = api.boards()
         call.enqueue(object : Callback<List<ListBoardDto>?> {
-            override fun onResponse(call: Call<List<ListBoardDto>?>, response: Response<List<ListBoardDto>?>) {
+            override fun onResponse(
+                call: Call<List<ListBoardDto>?>,
+                response: Response<List<ListBoardDto>?>
+            ) {
                 if (response.isSuccessful) {
                     if (response.body() != null) {
                         val boards: List<ListBoardDto>? = response.body()
@@ -182,7 +184,7 @@ class BoardActivity : AppCompatActivity() {
         binding.textViewViewCnt1.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate1.text = createdDate.toString()
         binding.buttonStatus1.text =
-            when(statusId) {
+            when (statusId) {
                 0 -> "모집완료"
                 else -> "모집중"
             }
@@ -202,7 +204,7 @@ class BoardActivity : AppCompatActivity() {
         binding.textViewViewCnt2.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate2.text = createdDate.toString()
         binding.buttonStatus2.text =
-            when(statusId) {
+            when (statusId) {
                 0 -> "모집완료"
                 else -> "모집중"
             }
@@ -222,7 +224,7 @@ class BoardActivity : AppCompatActivity() {
         binding.textViewViewCnt3.text = "조회수 : ${viewCnt}"
         binding.hiddenCreatedDate3.text = createdDate.toString()
         binding.buttonStatus3.text =
-            when(statusId) {
+            when (statusId) {
                 0 -> "모집완료"
                 else -> "모집중"
             }
