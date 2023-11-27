@@ -27,21 +27,6 @@ public class UserRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM Users",
-                (rs, rowNum) -> {
-                    return User.builder()
-                            .id(rs.getLong("id"))
-                            .email(rs.getString("email"))
-                            .name(rs.getString("name"))
-                            .password(rs.getString("password"))
-                            .studentNum(rs.getInt("student_num"))
-                            .department(rs.getString("department"))
-                            .development(rs.getString("development"))
-                            .build();
-                });
-    }
-
     public Long saveUser(CreateUserDto createUserDto) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(conn -> {
