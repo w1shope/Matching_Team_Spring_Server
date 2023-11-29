@@ -116,9 +116,9 @@ public class UserRepository {
         try {
             jdbcTemplate.queryForObject("SELECT id FROM users WHERE email = ?", Long.class, email);
         } catch(EmptyResultDataAccessException ex) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 }

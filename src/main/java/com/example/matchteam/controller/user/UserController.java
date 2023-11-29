@@ -23,7 +23,6 @@ public class UserController {
 
     @PostMapping("/users")
     public Long saveUser(@RequestBody CreateUserDto createUserDto) {
-        log.info("dto={}", createUserDto);
         return userService.saveUser(createUserDto);
     }
 
@@ -41,5 +40,9 @@ public class UserController {
     @GetMapping("/users/{email}")
     public WriteCountDto getWriteCount(@PathVariable String email) {
         return new WriteCountDto(boardService.getWriteCount(email), commentService.getWriteCount(email));
+    }
+    @GetMapping("/users/exist/{email}")
+    public boolean existUser(@PathVariable String email) {
+        return userService.exist(email);
     }
 }
