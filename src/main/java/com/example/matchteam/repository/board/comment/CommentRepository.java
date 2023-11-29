@@ -113,10 +113,13 @@ public class CommentRepository {
             // 나머지 코드는 동일하게 유지됩니다.
             for (Board board : boards) {
                 int status = jdbcTemplate.queryForObject("SELECT status FROM project_status WHERE id = ?", Integer.class, board.getStatusId());
+                Long id = jdbcTemplate.queryForObject("SELECT user_id FROM boards WHERE id = ?", Long.class, board.getId());
+                String username = userRepository.findByUserName(id);
                 dtoList.add(new BoardListDto(
                         board.getId(),
                         board.getTitle(),
                         board.getContent(),
+                        username,
                         board.getViewCnt(),
                         board.getCreatedDate(),
                         status
