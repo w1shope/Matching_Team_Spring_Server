@@ -43,4 +43,8 @@ public class UserService {
     public String getPassword(String email) {
         return userRepository.findPassword(email);
     }
+    @Transactional
+    public boolean exist(String email) {
+        return userRepository.exist(email);
+    }
 }

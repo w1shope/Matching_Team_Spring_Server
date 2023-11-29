@@ -1,6 +1,7 @@
 package com.example.matchteam.controller.user.authenticate;
 
 import com.example.matchteam.dto.email.MailDto;
+import com.example.matchteam.dto.user.find.UserEmailAuthenticateDto;
 import com.example.matchteam.service.user.UserService;
 import com.example.matchteam.service.user.authenticate.AuthenticateService;
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,10 @@ public class AuthenticateController {
     @GetMapping("/users/password/{email}")
     public String getUserPassword(@PathVariable("email") String email) {
         return userService.getPassword(email);
+    }
+    @GetMapping("/users/password/exist/{email}")
+    public boolean existUser(@PathVariable String email) {
+        return userService.exist(email);
     }
 
     private int createAuthenticateCode() {

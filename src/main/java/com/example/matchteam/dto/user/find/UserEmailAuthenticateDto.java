@@ -1,4 +1,4 @@
-package com.example.matchteam.controller.user.authenticate;
+package com.example.matchteam.dto.user.find;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

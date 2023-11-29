@@ -6,6 +6,7 @@ import com.example.matchteam.dto.user.CreateUserDto;
 import com.example.matchteam.dto.user.UserInfoDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -110,6 +111,14 @@ public class UserRepository {
     }
     public String findPassword(String email) {
         return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email = ?", String.class, email);
+    }
+    public boolean exist(String email) {
+        try {
+            jdbcTemplate.queryForObject("SELECT id FROM users WHERE email = ?", Long.class, email);
+        } catch(EmptyResultDataAccessException ex) {
+            return false;
+        }
+        return true;
     }
 
 }
