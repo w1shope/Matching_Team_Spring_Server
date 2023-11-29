@@ -17,7 +17,6 @@ public class BoardListDto {
     private int status;
 
     @Builder
-
     public BoardListDto(Long id, String title, String content, int viewCnt, Timestamp createdDate, int status) {
         this.id = id;
         this.title = title;

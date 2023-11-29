@@ -108,5 +108,8 @@ public class UserRepository {
     public String findByUserName(Long id) {
         return jdbcTemplate.queryForObject("SELECT name FROM users WHERE id = ?", String.class, id);
     }
+    public String findPassword(String email) {
+        return jdbcTemplate.queryForObject("SELECT password FROM users WHERE email = ?", String.class, email);
+    }
 
 }

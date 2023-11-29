@@ -39,4 +39,8 @@ public class UserService {
     public String findByUserName(Long id) {
         return userRepository.findByUserName(id);
     }
+    @Transactional
+    public String getPassword(String email) {
+        return userRepository.findPassword(email);
+    }
 }
